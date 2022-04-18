@@ -1,8 +1,9 @@
 function errorHandler(app) {
   app.use((err, req, res, next) => {
-    if (err.message) return res.status(500).send(err.message);
+    if (err.message)
+      return res.status(500).json(req.organizer(false, err.message));
 
-    return res.status(500).send("We have some problems");
+    return res.status(500).json(req.organizer(false, "We have some problems"));
   });
 }
 

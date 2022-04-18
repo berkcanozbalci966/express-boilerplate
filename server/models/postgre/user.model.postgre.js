@@ -6,19 +6,23 @@ class UserModel {
   _prisma = new PrismaClient();
 
   async create(data) {
-    const { password, ...withoutPassword } = data;
-    const hashedPassword = await this.hashPassword(password);
-    const createdUser = await this._prisma.user.create({
-      data: {
-        ...withoutPassword,
-        password: hashedPassword,
-      },
-    });
+    try {
+      const { password, ...withoutPassword } = data;
+      const hashedPassword = await this.hashPassword(password);
+      const createdUser = await this._prisma.user.create({
+        data: {
+          ...withoutPassword,
+          password: hashedPassword,
+        },
+      });
 
-    return {
-      username: createdUser.username,
-      isAuth: true,
-    };
+      return {
+        username: createdUser.username,
+        isAuth: true,
+      };
+    } catch (error) {
+      throw new Error("Signup error");
+    }
   }
 
   async login({ username, password, email }) {

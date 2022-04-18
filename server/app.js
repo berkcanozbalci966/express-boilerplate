@@ -12,7 +12,10 @@ const {
   errorHandler,
   morganMiddleWare,
   sessionMiddleWare,
+  IocMiddleware,
 } = require("./middlewares");
+
+IocMiddleware(app);
 
 app.use(
   cors({

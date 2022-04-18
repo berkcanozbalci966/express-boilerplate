@@ -1,13 +1,13 @@
-async function AuthMiddleWare(app, route) {
+function AuthMiddleWare(app, route) {
   app.use(route, checkLogin);
 }
 
-async function checkLogin(req, res, next) {
-  if (req.session.auth) {
-    return next();
+function checkLogin(req, res, next) {
+  if (!req.session.auth) {
+    throw new Error("session error");
   }
 
-  return res.sendStatus(403);
+  next();
 }
 
 module.exports = {
