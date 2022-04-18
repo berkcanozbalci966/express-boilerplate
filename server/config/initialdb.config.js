@@ -1,4 +1,4 @@
-const { registerUser } = require("../models/user/user.model");
+const { registerUser } = require("../models/mongo/user/user.mongo.model");
 
 const userInfos = {
   email: "test1@gmail.com",

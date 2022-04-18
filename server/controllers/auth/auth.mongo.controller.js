@@ -1,4 +1,16 @@
-const { registerUser, loginUser } = require("../models/user/user.model");
+const {
+  registerUser,
+  loginUser,
+} = require("../../models/mongo/user/user.mongo.model");
+
+function init() {
+  return {
+    register,
+    login,
+    profile,
+    logout,
+  };
+}
 
 async function register(req, res, next) {
   try {
@@ -56,9 +68,4 @@ async function logout(req, res, next) {
   }
 }
 
-module.exports = {
-  register,
-  login,
-  profile,
-  logout,
-};
+module.exports = init;

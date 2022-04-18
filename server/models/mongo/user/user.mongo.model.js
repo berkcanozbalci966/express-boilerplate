@@ -1,6 +1,6 @@
 const User = require("./user.mongo");
 const bcrypt = require("bcrypt");
-const { SALT_ROUNDS } = require("../../config/server.config");
+const { SALT_ROUNDS } = require("../../../config/server.config");
 
 async function registerUser({ username, password, email, charIdNumber }) {
   try {

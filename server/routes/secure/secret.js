@@ -1,7 +1,7 @@
 const express = require("express");
 
 const { getSecret } = require("../../controllers/secret");
-const { logout } = require("../../controllers/auth.controller");
+const { logout } = require("../../controllers/auth/auth.controller")();
 
 const router = express.Router();
 
