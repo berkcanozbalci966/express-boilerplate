@@ -26,17 +26,20 @@ class UserModel {
       if ((!username || !email) && !password) {
         throw new Error("Empty fields");
       }
-      const checkPassword = await this.checkPassword({
+      const { isPasswordTrue, foundedUsername } = await this.checkPassword({
         username,
         password,
         email,
       });
 
-      if (!checkPassword) {
+      if (!isPasswordTrue) {
         throw new Error("Login failled333!");
       }
 
-      return { success: true };
+      return {
+        username: foundedUsername,
+        isAuth: true,
+      };
     } catch (error) {
       throw new Error("Login failled!");
     }
@@ -53,7 +56,10 @@ class UserModel {
 
     const checkPassword = this.comparePassword(password, foundedUser.password);
 
-    return checkPassword;
+    return {
+      isPasswordTrue: checkPassword,
+      foundedUsername: foundedUser.username,
+    };
   }
 
   async hashPassword(password) {

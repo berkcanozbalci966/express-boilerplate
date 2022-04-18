@@ -17,11 +17,11 @@ async function register(req, res, next) {
       surname,
     });
 
-    console.log(registerResponse);
-
     req.session.auth = registerResponse;
+
     await req.session.save();
-    return res.send("success");
+
+    return res.send(sessionFilter(req.session.auth));
   } catch (error) {
     next(error);
   }
@@ -30,12 +30,22 @@ async function register(req, res, next) {
 async function login(req, res, next) {
   try {
     const { username, password, email } = req.body;
-    const isLoggedIn = await userModel.login({ username, password, email });
+    const loginResponse = await userModel.login({ username, password, email });
+    req.session.auth = loginResponse;
 
-    res.send(isLoggedIn);
+    await req.session.save();
+
+    return res.json(sessionFilter(req.session.auth));
   } catch (error) {
     next(error);
   }
+}
+
+function sessionFilter(session) {
+  return {
+    username: session.username,
+    isAuth: session.isAuth,
+  };
 }
 
 module.exports = {
