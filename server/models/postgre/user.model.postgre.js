@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 class UserModel {
   _prisma = new PrismaClient();
 
-  async createUser(data) {
+  async create(data) {
     const { password, ...withoutPassword } = data;
     const hashedPassword = await this.hashPassword(password);
     return await this._prisma.user.create({
@@ -17,16 +17,39 @@ class UserModel {
     });
   }
 
-  async loginUser({ username, password, email }) {
+  async login({ username, password, email }) {
     try {
       if ((!username || !email) && !password) {
         throw new Error("Empty fields");
       }
-    } catch (error) {}
+      const checkPassword = await this.checkPassword({
+        username,
+        password,
+        email,
+      });
+
+      if (!checkPassword) {
+        throw new Error("Login failled333!");
+      }
+
+      return { success: true };
+    } catch (error) {
+      throw new Error("Login failled!");
+    }
   }
 
-  async getAllUsers() {
+  async getAll() {
     return await this._prisma.user.findMany();
+  }
+
+  async checkPassword({ username, email, password }) {
+    const foundedUser = username
+      ? await this.foundByUsername(username)
+      : await this.foundByEmail(email);
+
+    const checkPassword = this.comparePassword(password, foundedUser.password);
+
+    return checkPassword;
   }
 
   async hashPassword(password) {
@@ -35,6 +58,26 @@ class UserModel {
 
   async comparePassword(password, hash) {
     return await bcrypt.compare(password, hash);
+  }
+
+  async foundByUsername(username) {
+    const foundedUser = await this._prisma.user.findUnique({
+      where: {
+        username,
+      },
+    });
+
+    return foundedUser;
+  }
+
+  async foundByEmail(email) {
+    const foundedUser = await this._prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    return foundedUser;
   }
 }
 

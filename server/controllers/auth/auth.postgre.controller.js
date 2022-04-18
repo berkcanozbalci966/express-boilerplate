@@ -9,7 +9,7 @@ async function register(req, res, next) {
     if (!username || !password || !email || !name || !surname) {
       return res.sendStatus(400);
     }
-    const registerResponse = await userModel.createUser({
+    const registerResponse = await userModel.create({
       username,
       email,
       password,
@@ -30,6 +30,9 @@ async function register(req, res, next) {
 async function login(req, res, next) {
   try {
     const { username, password, email } = req.body;
+    const isLoggedIn = await userModel.login({ username, password, email });
+
+    res.send(isLoggedIn);
   } catch (error) {
     next(error);
   }
