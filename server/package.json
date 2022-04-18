@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon server.js"
+    "watch": "concurrently  \"npx prisma studio\" \"nodemon server.js\""
   },
   "keywords": [],
   "author": "",
@@ -24,6 +24,7 @@
     "redis": "^4.0.4"
   },
   "devDependencies": {
+    "concurrently": "^7.1.0",
     "prisma": "^3.12.0"
   }
 }

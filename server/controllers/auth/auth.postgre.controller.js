@@ -17,14 +17,25 @@ async function register(req, res, next) {
       surname,
     });
 
-    req.session.auth = registerResponse;
-    await req.session.save();
-    return res.json(req.session.auth);
+    console.log(registerResponse);
+
+    // req.session.auth = registerResponse;
+    // await req.session.save();
+    return res.send("success");
   } catch (error) {
     next(error);
   }
 }
 
-module.export = {
+async function login(req, res, next) {
+  try {
+    const { username, password, email } = req.body;
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = {
   register,
+  login,
 };

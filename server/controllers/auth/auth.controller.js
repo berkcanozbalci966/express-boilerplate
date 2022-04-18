@@ -4,10 +4,10 @@ const authDb = process.env.AUTH_DB;
 
 function init() {
   if (authDb == "mongo") {
-    return { ...mongoController() };
+    return mongoController;
   }
 
-  return { ...postgresController() };
+  return postgresController;
 }
 
 module.exports = init;
