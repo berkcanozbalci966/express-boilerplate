@@ -19,8 +19,8 @@ async function register(req, res, next) {
 
     console.log(registerResponse);
 
-    // req.session.auth = registerResponse;
-    // await req.session.save();
+    req.session.auth = registerResponse;
+    await req.session.save();
     return res.send("success");
   } catch (error) {
     next(error);

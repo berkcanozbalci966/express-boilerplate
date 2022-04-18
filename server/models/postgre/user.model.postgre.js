@@ -2,19 +2,23 @@ const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcrypt");
 const { SALT_ROUNDS } = require("../../config/server.config");
 
-const prisma = new PrismaClient();
 class UserModel {
   _prisma = new PrismaClient();
 
   async create(data) {
     const { password, ...withoutPassword } = data;
     const hashedPassword = await this.hashPassword(password);
-    return await this._prisma.user.create({
+    const createdUser = await this._prisma.user.create({
       data: {
         ...withoutPassword,
         password: hashedPassword,
       },
     });
+
+    return {
+      username: createdUser.username,
+      isAuth: true,
+    };
   }
 
   async login({ username, password, email }) {
